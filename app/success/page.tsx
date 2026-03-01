@@ -1,3 +1,5 @@
+"use client"; // <-- THIS IS THE MAGIC LINE I FORGOT!
+
 import Link from "next/link";
 
 export default function SuccessPage() {
