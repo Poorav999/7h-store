@@ -12,17 +12,18 @@ declare global {
 }
 
 export default function CheckoutPage() {
+  // 1. Using cartTotal here
   const { cartItems, cartTotal } = useCart();
 
   const handlePayment = async () => {
     const options = {
-      key: "YOUR_RAZORPAY_KEY_ID", // replace with your key
-      amount: cartTotal * 100, // amount in paise
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // 2. Using your secure .env key
+      amount: (cartTotal || 0) * 100, // Safe fallback to 0
       currency: "INR",
-      name: "Your Brand Name",
-      description: "Order Payment",
+      name: "7 HOUSES",
+      description: "Syndicate Order Payment",
       handler: function (response: any) {
-        // ✅ Redirect to success page after payment
+        // Redirect to success page after payment
         window.location.href = "/success";
       },
       prefill: {
@@ -43,7 +44,7 @@ export default function CheckoutPage() {
       
       <Link 
         href="/cart" 
-        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-black transition mb-12"
+        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition mb-12"
       >
         <ArrowLeft size={14} /> Back to Bag
       </Link>
@@ -54,12 +55,12 @@ export default function CheckoutPage() {
           
           {/* SHIPPING + PAYMENT UI remains same */}
 
-          {/* 🔥 Updated Button */}
+          {/* 🔥 Updated Button with the correct cartTotal variable */}
           <button
             onClick={handlePayment}
-            className="w-full bg-black text-white py-6 font-black uppercase tracking-[0.3em] hover:bg-zinc-800 transition shadow-2xl flex items-center justify-center gap-3"
+            className="w-full bg-white text-black py-6 font-black uppercase tracking-[0.3em] hover:bg-red-600 hover:text-white transition shadow-2xl flex items-center justify-center gap-3"
           >
-            Complete Order — ₹{cartTotal.toFixed(2)} <ArrowRight size={20} />
+            Complete Order — ₹{Number(cartTotal || 0).toFixed(2)} <ArrowRight size={20} />
           </button>
 
         </div>
