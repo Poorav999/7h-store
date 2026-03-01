@@ -38,7 +38,7 @@ export default function SuccessPage() {
       {/* Security Footer */}
       <div className="absolute bottom-10 opacity-20 flex space-x-4 grayscale">
         <span className="text-[10px] font-black uppercase">7H_ENCRYPTED_TRANSACTION</span>
-        <span className="text-[10px] font-black uppercase">//</span>
+        <span className="text-[10px] font-black uppercase">/</span>
         <span className="text-[10px] font-black uppercase">STRICTLY_LIMITED_RELEASE</span>
       </div>
     </main>
