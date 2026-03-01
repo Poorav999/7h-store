@@ -1,16 +1,25 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { Providers } from "../components/Providers";
+import './globals.css';
+import { Syncopate, Space_Grotesk } from 'next/font/google';
+import { Providers } from '../components/Providers';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
+// The wide, aggressive header font
+const syncopate = Syncopate({ 
+  subsets: ['latin'], 
+  weight: ['400', '700'],
+  variable: '--font-syncopate'
+});
 
-const inter = Inter({ subsets: ["latin"] });
+// The technical, brutalist body font
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ['latin'],
+  variable: '--font-space'
+});
 
-export const metadata: Metadata = {
-  title: "7 HOUSES | 7H",
-  description: "Premium Streetwear & Essentials",
+export const metadata = {
+  title: '7 HOUSES | SYNDICATE',
+  description: 'Premium Streetwear Drop',
 };
 
 export default function RootLayout({
@@ -20,7 +29,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-black`} suppressHydrationWarning>
+      {/* Apply the new fonts globally */}
+      <body className={`${spaceGrotesk.className} ${syncopate.variable} bg-black text-white`} suppressHydrationWarning>
         <Providers>
           <Navbar />
           {children}
@@ -28,5 +38,5 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
-  )
+  );
 }
