@@ -1,154 +1,129 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useState } from "react";
+import Reveal from "@/components/Reveal";
 
-export default function AdminDashboard() {
-  const { data: session, status } = useSession();
-  const ADMIN_EMAIL = "juice.wrld999dead@gmail.com";
+export default function AdminPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    description: "",
+    category: "T-SHIRT",
+    stock: "10",
+    image: "/shadyblue.jpg",
+  });
+  const [loading, setLoading] = useState(false);
 
-  // Form State to hold the clothes data
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
-  const [statusMsg, setStatusMsg] = useState("");
-
-  // Loading Screen
-  if (status === "loading") {
-    return <div className="min-h-screen bg-black text-white flex items-center justify-center font-black tracking-widest uppercase">LOADING...</div>;
-  }
-
-  // The Bouncer
-  if (!session || session.user?.email !== ADMIN_EMAIL) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center text-center px-4">
-        <h1 className="text-3xl font-black uppercase tracking-widest text-red-600 border-2 border-red-600 p-8">
-          ACCESS DENIED // 7H TEAM ONLY
-        </h1>
-      </div>
-    );
-  }
-
-  // Handle Button Click
-// Handle Button Click & Database Upload
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatusMsg("UPLOADING TO MAINFRAME...");
+    setLoading(true);
 
     try {
       const res = await fetch("/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, description, price, image }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       if (res.ok) {
-        setStatusMsg("DROP UPLOADED SUCCESSFULLY! 🔥");
-        // Wipe the form clean for the next item
-        setName("");
-        setDescription("");
-        setPrice("");
-        setImage("");
+        alert("Drop Added to Vault!");
+        setFormData({ ...formData, name: "", price: "", description: "" });
       } else {
-        setStatusMsg("UPLOAD FAILED. CHECK TERMINAL.");
+        alert("Upload failed.");
       }
     } catch (error) {
-      setStatusMsg("SYSTEM ERROR. COULD NOT CONNECT.");
+      alert("Connection error.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-black text-white px-4 py-24 selection:bg-red-600 selection:text-white">
-      <div className="max-w-4xl mx-auto">
-        
-        {/* Header */}
-        <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 border-b-2 border-white pb-4">
-          7H Command Center
+    <main className="min-h-screen pt-32 pb-20 px-6 lg:px-20 max-w-3xl mx-auto text-white">
+      <Reveal>
+        <h1 className="text-5xl font-black font-syncopate uppercase tracking-tighter mb-12">
+          SYNDICATE_ADMIN
         </h1>
-        <p className="text-zinc-400 font-bold tracking-widest mb-12 uppercase text-sm md:text-base">
-          Authentication: <span className="text-green-500">VERIFIED</span> // Ready to drop.
-        </p>
+      </Reveal>
 
-        {/* Upload Form Box */}
-        <div className="border-2 border-white p-6 md:p-10 bg-zinc-950">
-          <h2 className="text-2xl font-black uppercase tracking-widest mb-8 text-red-600">
-            [ Upload New Item ]
-          </h2>
+      <Reveal>
+        <form onSubmit={handleSubmit} className="space-y-6 bg-zinc-900/50 p-8 border border-zinc-800">
+          <div>
+            <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Product Name</label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none"
+            />
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            
-            {/* Product Name */}
+          <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-bold tracking-widest uppercase mb-2">Item Name</label>
-              <input 
-                type="text" 
+              <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Price (₹)</label>
+              <input
+                type="number"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full bg-black border-2 border-zinc-800 p-4 text-white focus:border-white focus:outline-none transition-colors"
-                placeholder="e.g. 7H HEAVYWEIGHT HOODIE"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none"
               />
             </div>
-
-            {/* Description */}
             <div>
-              <label className="block text-sm font-bold tracking-widest uppercase mb-2">Description</label>
-              <textarea 
+              <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Stock</label>
+              <input
+                type="number"
                 required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-black border-2 border-zinc-800 p-4 text-white focus:border-white focus:outline-none transition-colors h-32 resize-none"
-                placeholder="e.g. 100% French Terry Cotton. Boxy fit. Distressed details."
+                value={formData.stock}
+                onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none"
               />
             </div>
+          </div>
 
-            {/* Price and Image Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-bold tracking-widest uppercase mb-2">Price ($)</label>
-                <input 
-                  type="number" 
-                  required
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="w-full bg-black border-2 border-zinc-800 p-4 text-white focus:border-white focus:outline-none transition-colors"
-                  placeholder="e.g. 85"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold tracking-widest uppercase mb-2">Image URL</label>
-                <input 
-                  type="url" 
-                  required
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  className="w-full bg-black border-2 border-zinc-800 p-4 text-white focus:border-white focus:outline-none transition-colors"
-                  placeholder="e.g. https://imgur.com/your-image.png"
-                />
-              </div>
-            </div>
+          <div>
+            <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Category</label>
+            <input
+              type="text"
+              required
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none"
+            />
+          </div>
 
-            {/* Submit Button */}
-            <button 
-              type="submit" 
-              className="w-full bg-white text-black font-black uppercase tracking-widest p-5 hover:bg-red-600 hover:text-white transition-colors duration-200 mt-8"
-            >
-              Publish to Store
-            </button>
+          <div>
+            <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Image Filename (e.g., /shadyblue.jpg)</label>
+            <input
+              type="text"
+              required
+              value={formData.image}
+              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none"
+            />
+          </div>
 
-            {/* Status Message */}
-            {statusMsg && (
-              <p className="text-center font-bold tracking-widest uppercase mt-6 text-yellow-500">
-                {statusMsg}
-              </p>
-            )}
-            
-          </form>
-        </div>
-      </div>
+          <div>
+            <label className="block text-zinc-500 font-bold uppercase tracking-widest text-xs mb-2">Description</label>
+            <textarea
+              required
+              rows={4}
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="w-full bg-black border border-zinc-800 text-white p-3 focus:border-red-600 outline-none resize-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-white text-black py-4 font-black uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all disabled:opacity-50"
+          >
+            {loading ? "UPLOADING..." : "DEPLOY DROP"}
+          </button>
+        </form>
+      </Reveal>
     </main>
   );
 }

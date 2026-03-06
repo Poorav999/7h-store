@@ -1,40 +1,37 @@
-import './globals.css';
-import { Syncopate, Space_Grotesk } from 'next/font/google';
-import { Providers } from '../components/Providers';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import type { Metadata } from "next";
+import { Space_Grotesk, Syncopate } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Providers from "@/components/Providers";
+import CustomCursor from "@/components/CustomCursor";
+import Noise from "@/components/Noise";
+import StatusBar from "@/components/StatusBar";
+import Preloader from "@/components/Preloader";
 
-// The wide, aggressive header font
-const syncopate = Syncopate({ 
-  subsets: ['latin'], 
-  weight: ['400', '700'],
-  variable: '--font-syncopate'
-});
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
+const syncopate = Syncopate({ weight: ["400", "700"], subsets: ["latin"], variable: "--font-syncopate" });
 
-// The technical, brutalist body font
-const spaceGrotesk = Space_Grotesk({ 
-  subsets: ['latin'],
-  variable: '--font-space'
-});
-
-export const metadata = {
-  title: '7 HOUSES | SYNDICATE',
-  description: 'Premium Streetwear Drop',
+export const metadata: Metadata = {
+  title: "7HOUSES | SYNDICATE",
+  description: "Exclusive Drops",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      {/* Apply the new fonts globally */}
-      <body className={`${spaceGrotesk.className} ${syncopate.variable} bg-black text-white`} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning> 
+      <body 
+        className={`${spaceGrotesk.variable} ${syncopate.variable} font-sans bg-black text-white cursor-none selection:bg-red-600 selection:text-white`}
+        suppressHydrationWarning
+      >
         <Providers>
-          <Navbar />
+          <Preloader />
+          <CustomCursor />
+          <Noise />
+          <Navbar /> 
           {children}
           <Footer />
+          <StatusBar />
         </Providers>
       </body>
     </html>

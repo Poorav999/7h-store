@@ -31,7 +31,7 @@ export default function DropsPage() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [ DROP_DATE ]);
 
   return (
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
@@ -42,7 +42,7 @@ export default function DropsPage() {
 
       <div className="z-10 text-center">
         <h2 className="text-sm font-black uppercase tracking-[0.5em] text-red-600 mb-8 animate-pulse">
-          // INCOMING TRANSMISSION //
+          /INCOMING TRANSMISSION //
         </h2>
 
         {timeLeft.isLive ? (
@@ -60,7 +60,7 @@ export default function DropsPage() {
         ) : (
           <div className="space-y-12">
             <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter">
-              SPRING '26 <br /> <span className="text-transparent" style={{ WebkitTextStroke: '2px white'}}>MANIFESTO</span>
+              SPRING 26 <br /> <span className="text-transparent" style={{ WebkitTextStroke: '2px white'}}>MANIFESTO</span>
             </h1>
 
             {/* The Countdown Grid */}

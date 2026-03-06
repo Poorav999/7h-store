@@ -1,62 +1,74 @@
 "use client";
 
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useCart } from "@/components/CartContext";
+import { useState } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 
 export default function Navbar() {
-  const { data: session } = useSession();
-  const ADMIN_EMAIL = "juice.wrld999dead@gmail.com";
+  const pathname = usePathname();
+  const { cartItems, isLoaded } = useCart();
+  const cartCount = isLoaded ? cartItems.length : 0;
+
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > lastScrollY && latest > 50) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+    setLastScrollY(latest);
+  });
 
   return (
-    <nav className="border-b-2 border-white bg-black text-white px-4 md:px-8 py-5 flex items-center justify-between uppercase font-black tracking-widest sticky top-0 z-50">
-      
-      {/* LEFT: Brand Logo */}
-      <Link href="/" className="text-3xl tracking-tighter hover:text-red-600 transition-colors duration-200">
-        7H.
+    <motion.nav
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: "-150%" },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.35, ease: "easeInOut" }}
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-8 px-8 py-3 bg-[#111] border border-zinc-800 rounded-sm"
+    >
+      <Link href="/" className="flex items-center justify-center p-0 m-0 outline-none">
+        <Image
+          src="/logo.png"
+          alt="7H Logo"
+          width={100}
+          height={32}
+          className="w-auto h-8 object-contain"
+          priority
+        />
       </Link>
 
-      {/* CENTER: Navigation Links (Hidden on small phones) */}
-      <div className="hidden md:flex space-x-10">
-        <Link href="/shop" className="hover:text-red-600 transition-colors duration-200">
-          Shop
+      <div className="flex items-center gap-6">
+        <Link
+          href="/shop"
+          className={`text-sm font-bold uppercase tracking-[0.2em] transition-all hover:text-red-500 duration-300 ${pathname === "/shop" ? "text-red-600" : "text-zinc-300"
+            }`}
+        >
+          Vault
         </Link>
-        <Link href="/drops" className="hover:text-red-600 transition-colors duration-200">
+        <Link
+          href="/drops"
+          className={`text-sm font-bold uppercase tracking-[0.2em] transition-all hover:text-red-500 duration-300 ${pathname === "/drops" ? "text-red-600" : "text-zinc-300"
+            }`}
+        >
           Drops
         </Link>
-      </div>
-
-      {/* RIGHT: Admin, Login/Logout, and Cart */}
-      <div className="flex items-center space-x-6 md:space-x-8 text-sm md:text-base">
-        
-        {/* Only show Command Center if the Admin is logged in */}
-        {session?.user?.email === ADMIN_EMAIL && (
-          <Link href="/admin" className="text-red-600 hover:text-white transition-colors duration-200 hidden sm:block">
-            [ ADMIN ]
-          </Link>
-        )}
-
-        {/* Dynamic Login / Logout Button */}
-        {session ? (
-          <button 
-            onClick={() => signOut()} 
-            className="hover:text-red-600 transition-colors duration-200"
-          >
-            LOGOUT
-          </button>
-        ) : (
-          <button 
-            onClick={() => signIn("google")} 
-            className="hover:text-red-600 transition-colors duration-200"
-          >
-            LOGIN
-          </button>
-        )}
-        
-        {/* Shopping Cart */}
-        <Link href="/cart" className="hover:text-red-600 transition-colors duration-200 flex items-center">
-          CART <span className="ml-1 text-red-600">[0]</span>
+        <Link
+          href="/cart"
+          className={`text-sm font-bold uppercase tracking-[0.2em] transition-all hover:text-red-500 duration-300 flex items-center gap-2 ${pathname === "/cart" ? "text-red-600" : "text-zinc-300"
+            }`}
+        >
+          Bag [{cartCount}]
         </Link>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

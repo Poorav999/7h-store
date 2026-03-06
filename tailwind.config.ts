@@ -12,6 +12,15 @@ const config: Config = {
         sans: ['var(--font-space)', 'sans-serif'],
         syncopate: ['var(--font-syncopate)', 'sans-serif'],
       },
+      keyframes: {
+        'marquee-vertical': {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-50%)' },
+        },
+      },
+      animation: {
+        'marquee-vertical': 'marquee-vertical 20s linear infinite',
+      },
     },
   },
   plugins: [],

@@ -1,46 +1,41 @@
-"use client"; // <-- THIS IS THE MAGIC LINE I FORGOT!
+"use client";
 
 import Link from "next/link";
+import Reveal from "@/components/Reveal";
+import { useEffect } from "react";
+import { useCart } from "@/components/CartContext";
 
 export default function SuccessPage() {
+  const { setCartItems } = useCart();
+
+  useEffect(() => {
+    localStorage.removeItem("7h_cart");
+    if (setCartItems) setCartItems([]);
+  }, [setCartItems]);
+
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 text-center">
-      {/* Brutalist Success Icon */}
-      <div className="border-4 border-green-500 p-8 mb-8 animate-pulse">
-        <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-green-500">
-          SECURED
-        </h1>
-      </div>
-
-      <h2 className="text-2xl md:text-4xl font-black uppercase tracking-widest mb-4">
-        Welcome to the Syndicate
-      </h2>
-      
-      <p className="text-zinc-500 font-bold uppercase tracking-widest max-w-md mb-12">
-        Your order is being processed by the 7H team. Check your email for the manifest.
-      </p>
-
-      <div className="flex flex-col sm:flex-row gap-6 w-full max-w-md">
-        <Link 
-          href="/shop" 
-          className="flex-1 bg-white text-black font-black uppercase tracking-widest py-4 hover:bg-red-600 hover:text-white transition-all text-center"
-        >
-          Return to Shop
-        </Link>
-        <button 
-          onClick={() => window.print()}
-          className="flex-1 border-2 border-white text-white font-black uppercase tracking-widest py-4 hover:bg-white hover:text-black transition-all"
-        >
-          Print Receipt
-        </button>
-      </div>
-
-      {/* Security Footer */}
-      <div className="absolute bottom-10 opacity-20 flex space-x-4 grayscale">
-        <span className="text-[10px] font-black uppercase">7H_ENCRYPTED_TRANSACTION</span>
-        <span className="text-[10px] font-black uppercase">/</span>
-        <span className="text-[10px] font-black uppercase">STRICTLY_LIMITED_RELEASE</span>
-      </div>
+    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center pt-32 px-6">
+      <Reveal>
+        <div className="text-center">
+          <h1 className="text-6xl md:text-8xl font-black font-syncopate uppercase tracking-tighter mb-4 text-red-600">
+            CONFIRMED
+          </h1>
+          <p className="text-zinc-500 font-bold uppercase tracking-[0.5em] mb-12">
+            / Order_Processed_By_Syndicate //
+          </p>
+          <div className="bg-zinc-900 border border-zinc-800 p-8 mb-12 max-w-md mx-auto">
+            <p className="text-xs font-bold uppercase leading-relaxed tracking-widest text-zinc-400">
+              Your manifest has been logged into the 7H database. A transmission containing your tracking intel will be dispatched to your email shortly.
+            </p>
+          </div>
+          <Link 
+            href="/" 
+            className="bg-white text-black px-12 py-4 font-black uppercase tracking-[0.3em] hover:bg-red-600 hover:text-white transition-all duration-300"
+          >
+            Return to Base
+          </Link>
+        </div>
+      </Reveal>
     </main>
   );
 }
