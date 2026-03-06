@@ -25,7 +25,7 @@ export default async function CategoryPage({ params }: Props) {
           createdAt: "desc", // Newest products first
         },
         include: {
-          category: true, // Bring the category info for the cards
+          Category: true, // Bring the category info for the cards
         }
       },
     },
@@ -38,7 +38,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen">
-      
+
       {/* Back to Shop Button */}
       <div className="mb-8">
         <Link href="/shop" className="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-black transition">
@@ -64,20 +64,20 @@ export default async function CategoryPage({ params }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
           {category.products.map((product) => (
-            <Link 
-              href={`/product/${product.id}`} 
-              key={product.id} 
+            <Link
+              href={`/product/${product.id}`}
+              key={product.id}
               className="group block cursor-pointer"
             >
               {/* Image Container */}
               <div className="relative aspect-[4/5] w-full bg-gray-100 overflow-hidden mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={product.images[0]} 
+                <img
+                  src={product.images[0]}
                   alt={product.name}
                   className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                 />
-                
+
                 {product.discountPrice && (
                   <div className="absolute top-4 left-4 bg-black text-white text-[10px] font-bold px-2 py-1 uppercase tracking-widest">
                     Sale
@@ -93,7 +93,7 @@ export default async function CategoryPage({ params }: Props) {
                 <h4 className="text-lg font-bold mb-1 group-hover:underline decoration-2 underline-offset-4">
                   {product.name}
                 </h4>
-                
+
                 <div className="flex items-center gap-3">
                   <span className="text-black font-medium">${product.price.toFixed(2)}</span>
                   {product.discountPrice && (
