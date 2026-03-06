@@ -31,7 +31,7 @@ export default async function HomePage() {
           <div className="relative h-full w-full overflow-hidden">
             {heroProduct && (
               <Image
-                src={heroProduct.images?.[0] || "/shadyblue.jpg"}
+                src={!heroProduct.images?.[0] ? "/shadyblue.jpg" : (heroProduct.images[0].startsWith("http") || heroProduct.images[0].startsWith("/") ? heroProduct.images[0] : `/${heroProduct.images[0]}`)}
                 alt={heroProduct.name}
                 fill
                 unoptimized
@@ -83,7 +83,7 @@ export default async function HomePage() {
                   >
                     <div className="relative w-full aspect-[4/5] bg-[#0a0a0a] overflow-hidden mb-4">
                       <Image
-                        src={product.images?.[0] || "/shadyblue.jpg"}
+                        src={!product.images?.[0] ? "/shadyblue.jpg" : (product.images[0].startsWith("http") || product.images[0].startsWith("/") ? product.images[0] : `/${product.images[0]}`)}
                         alt={product.name}
                         fill
                         unoptimized
@@ -178,7 +178,7 @@ export default async function HomePage() {
                   </div>
 
                   <Image
-                    src={product.images?.[0] || "/shadyblue.jpg"}
+                    src={!product.images?.[0] ? "/shadyblue.jpg" : (product.images[0].startsWith("http") || product.images[0].startsWith("/") ? product.images[0] : `/${product.images[0]}`)}
                     alt={product.name}
                     fill
                     unoptimized

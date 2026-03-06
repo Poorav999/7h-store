@@ -5,13 +5,11 @@ export default function AddToCartBtn({ product }: { product: any }) {
   const { addToCart } = useCart();
 
   return (
-    <button 
+    <button
       onClick={() => {
         addToCart({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.images[0]
+          ...product,
+          images: product.images || [],
         });
         alert("ADDED TO 7H SYNDICATE BAG 🔥");
       }}

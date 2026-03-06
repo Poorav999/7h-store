@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: Props) {
               <div className="relative aspect-[4/5] w-full bg-gray-100 overflow-hidden mb-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={product.images[0]}
+                  src={!product.images?.[0] ? "/shadyblue.jpg" : (product.images[0].startsWith("http") || product.images[0].startsWith("/") ? product.images[0] : `/${product.images[0]}`)}
                   alt={product.name}
                   className="object-cover w-full h-full group-hover:scale-105 transition duration-500"
                 />
@@ -88,7 +88,7 @@ export default async function CategoryPage({ params }: Props) {
               {/* Product Info */}
               <div className="flex flex-col">
                 <span className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-                  {product.category?.name}
+                  {product.Category?.name}
                 </span>
                 <h4 className="text-lg font-bold mb-1 group-hover:underline decoration-2 underline-offset-4">
                   {product.name}

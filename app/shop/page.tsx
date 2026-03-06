@@ -85,7 +85,7 @@ export default async function ShopPage() {
                 </div>
 
                 <Image
-                  src={product.images?.[0] || "/shadyblue.jpg"}
+                  src={!product.images?.[0] ? "/shadyblue.jpg" : (product.images[0].startsWith("http") || product.images[0].startsWith("/") ? product.images[0] : `/${product.images[0]}`)}
                   alt={product.name}
                   fill
                   unoptimized

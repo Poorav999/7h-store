@@ -85,7 +85,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         </Reveal>
 
         {/* Center Column (The Product Image) */}
-        <div className="relative w-full h-[60vh] lg:h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden">
           <Image
             src={imageUrl}
             alt={product.name}
